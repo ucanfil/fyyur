@@ -586,7 +586,7 @@ def shows():
     }]
 
     shows = Show.query.join(Artist, Artist.id == Show.artist_id).join(Venue, Venue.id == Show.venue_id).add_columns(Show.venue_id, Show.artist_id, Venue.name.label(
-        'venue_name'), Artist.name.label('artist_name'), Artist.image_link.label('artist_image_link'), Show.start_time).all()
+        'venue_name'), Artist.name.label('artist_name'), Artist.image_link.label('artist_image_link'), Show.start_time).order_by(Show.start_time.desc()).all()
 
     return render_template('pages/shows.html', shows=shows)
 
