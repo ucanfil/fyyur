@@ -9,10 +9,12 @@ class BaseForm(FlaskForm):
 
 class ShowForm(BaseForm):
     artist_id = StringField(
-        'artist_id'
+        'artist_id',
+        validators=[DataRequired()],
     )
     venue_id = StringField(
-        'venue_id'
+        'venue_id',
+        validators=[DataRequired()],
     )
     start_time = DateTimeField(
         'start_time',
