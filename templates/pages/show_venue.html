@@ -5,6 +5,11 @@
 	<div class="col-sm-6">
 		<h1 class="monospace">
 			{{ venue.name }}
+			<a href="/venues/{{ venue.id }}/edit"><span><i class="far fa-edit"></i></span>
+			</a>
+			<form action="/venues/{{ venue.id }}" method="post" style="display: inline-block;">
+				<button type="submit" style="background-color: transparent; border: none; color: firebrick;"><i class="far fa-trash-alt"></i></button>
+			</form>
 		</h1>
 		<p class="subtitle">
 			ID: {{ venue.id }}
