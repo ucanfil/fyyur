@@ -35,9 +35,9 @@ class Show(db.Model):
     __tablename__ = 'Show'
 
     venue_id = db.Column(db.Integer, db.ForeignKey(
-        'Venue.id'), primary_key=True)
+        'Venue.id', ondelete="CASCADE"), primary_key=True)
     artist_id = db.Column(db.Integer, db.ForeignKey(
-        'Artist.id'), primary_key=True)
+        'Artist.id', ondelete='CASCADE'), primary_key=True)
     start_time = db.Column(db.DateTime, nullable=False)
 
     venue = db.relationship('Venue', back_populates='artists')
@@ -59,7 +59,7 @@ class Venue(db.Model):
     website = db.Column(db.String(120))
     seeking_talent = db.Column(db.Boolean, nullable=True, server_default='f')
     seeking_description = db.Column(db.String(500), nullable=True)
-    artists = db.relationship('Show', back_populates='venue')
+    artists = db.relationship('Show', back_populates='venue', cascade='all, delete-orphan')
 
 
 class Artist(db.Model):
@@ -76,7 +76,7 @@ class Artist(db.Model):
     seeking_venue = db.Column(db.Boolean, nullable=True, server_default='f')
     seeking_description = db.Column(db.String(500), nullable=True)
     website = db.Column(db.String(120))
-    venues = db.relationship('Show', back_populates='artist')
+    venues = db.relationship('Show', back_populates='artist', cascade='all, delete-orphan')
 
 
 db.create_all()
@@ -233,11 +233,7 @@ def create_venue_submission():
 
 @app.route('/venues/<venue_id>', methods=['POST'])
 def delete_venue(venue_id):
-    # TODO: Complete this endpoint for taking a venue_id, and using
-    # SQLAlchemy ORM to delete a record. Handle cases where the session commit could fail.
 
-    # BONUS CHALLENGE: Implement a button to delete a Venue on a Venue Page, have it so that
-    # clicking that button delete it from the db then redirect the user to the homepage
     error = False
 
     try:
