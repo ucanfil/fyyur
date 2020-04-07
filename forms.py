@@ -1,14 +1,20 @@
 from datetime import datetime
-from flask_wtf import Form
+from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, SelectMultipleField, DateTimeField
 from wtforms.validators import DataRequired, AnyOf, URL
 
-class ShowForm(Form):
+class BaseForm(FlaskForm):
+    class Meta:
+        csrf = False
+
+class ShowForm(BaseForm):
     artist_id = StringField(
-        'artist_id'
+        'artist_id',
+        validators=[DataRequired()],
     )
     venue_id = StringField(
-        'venue_id'
+        'venue_id',
+        validators=[DataRequired()],
     )
     start_time = DateTimeField(
         'start_time',
@@ -16,7 +22,7 @@ class ShowForm(Form):
         default= datetime.today()
     )
 
-class VenueForm(Form):
+class VenueForm(BaseForm):
     name = StringField(
         'name', validators=[DataRequired()]
     )
@@ -24,7 +30,60 @@ class VenueForm(Form):
         'city', validators=[DataRequired()]
     )
     state = SelectField(
-        'state', validators=[DataRequired()],
+        'state', validators=[DataRequired(),
+        AnyOf([
+            'AL',
+            'AK',
+            'AZ',
+            'AR',
+            'CA',
+            'CO',
+            'CT',
+            'DE',
+            'DC',
+            'FL',
+            'GA',
+            'HI',
+            'ID',
+            'IL',
+            'IN',
+            'IA',
+            'KS',
+            'KY',
+            'LA',
+            'ME',
+            'MT',
+            'NE',
+            'NV',
+            'NH',
+            'NJ',
+            'NM',
+            'NY',
+            'NC',
+            'ND',
+            'OH',
+            'OK',
+            'OR',
+            'MD',
+            'MA',
+            'MI',
+            'MN',
+            'MS',
+            'MO',
+            'PA',
+            'RI',
+            'SC',
+            'SD',
+            'TN',
+            'TX',
+            'UT',
+            'VT',
+            'VA',
+            'WA',
+            'WV',
+            'WI',
+            'WY',
+        ], message=u'Invalid value, must be one of: %(values)s')],
         choices=[
             ('AL', 'AL'),
             ('AK', 'AK'),
@@ -85,11 +144,13 @@ class VenueForm(Form):
     phone = StringField(
         'phone'
     )
+    website = StringField(
+        'website', validators=[URL()]
+    )
     image_link = StringField(
-        'image_link'
+        'image_link', validators=[URL()]
     )
     genres = SelectMultipleField(
-        # TODO implement enum restriction
         'genres', validators=[DataRequired()],
         choices=[
             ('Alternative', 'Alternative'),
@@ -117,7 +178,7 @@ class VenueForm(Form):
         'facebook_link', validators=[URL()]
     )
 
-class ArtistForm(Form):
+class ArtistForm(BaseForm):
     name = StringField(
         'name', validators=[DataRequired()]
     )
@@ -125,7 +186,60 @@ class ArtistForm(Form):
         'city', validators=[DataRequired()]
     )
     state = SelectField(
-        'state', validators=[DataRequired()],
+        'state', validators=[DataRequired(),
+        AnyOf([
+            'AL',
+            'AK',
+            'AZ',
+            'AR',
+            'CA',
+            'CO',
+            'CT',
+            'DE',
+            'DC',
+            'FL',
+            'GA',
+            'HI',
+            'ID',
+            'IL',
+            'IN',
+            'IA',
+            'KS',
+            'KY',
+            'LA',
+            'ME',
+            'MT',
+            'NE',
+            'NV',
+            'NH',
+            'NJ',
+            'NM',
+            'NY',
+            'NC',
+            'ND',
+            'OH',
+            'OK',
+            'OR',
+            'MD',
+            'MA',
+            'MI',
+            'MN',
+            'MS',
+            'MO',
+            'PA',
+            'RI',
+            'SC',
+            'SD',
+            'TN',
+            'TX',
+            'UT',
+            'VT',
+            'VA',
+            'WA',
+            'WV',
+            'WI',
+            'WY',
+        ], message=u'Invalid value, must be one of: %(values)s')],
         choices=[
             ('AL', 'AL'),
             ('AK', 'AK'),
@@ -181,14 +295,15 @@ class ArtistForm(Form):
         ]
     )
     phone = StringField(
-        # TODO implement validation logic for state
         'phone'
     )
+    website = StringField(
+        'website', validators=[URL()]
+    )
     image_link = StringField(
-        'image_link'
+        'image_link', validators=[URL()]
     )
     genres = SelectMultipleField(
-        # TODO implement enum restriction
         'genres', validators=[DataRequired()],
         choices=[
             ('Alternative', 'Alternative'),
@@ -213,8 +328,5 @@ class ArtistForm(Form):
         ]
     )
     facebook_link = StringField(
-        # TODO implement enum restriction
         'facebook_link', validators=[URL()]
     )
-
-# TODO IMPLEMENT NEW ARTIST FORM AND NEW SHOW FORM
